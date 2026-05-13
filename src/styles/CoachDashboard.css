@@ -1,0 +1,66 @@
+.coach-container{
+  min-height:100vh;
+  background:#0b0b0f;
+  color:white;
+  padding:40px;
+  animation:fadeIn .5s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.coach-form{
+  max-width:600px;
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+input, textarea{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#141419;
+  color:white;
+}
+
+.exercise-block{
+  background:#141419;
+  padding:15px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  transition:.3s;
+}
+
+.exercise-block:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,.6);
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#ff7a3c;
+  color:white;
+  cursor:pointer;
+  transition:.25s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(255,122,60,.4);
+}
+
+.success{
+  color:#4CAF50;
+}
+
+.error{
+  color:#ff3c3c;
+}
