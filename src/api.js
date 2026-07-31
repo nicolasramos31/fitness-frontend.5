@@ -1,4 +1,4 @@
 
-const API_URL = "https://api.render.com/deploy/srv-d9mhtcu417fc73bf7lmg?key=wVU510sS21w";
+const API_URL = "https://fitness-backend-1-zr3a.onrender.com";
 
 export default API_URL;
