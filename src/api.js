@@ -1,4 +1,4 @@
 
-const API_URL = "https://fitness-backend-production-9d1c.up.railway.app/api";
+const API_URL = "https://fitness-backend.onrender.com/api";
 
 export default API_URL;
