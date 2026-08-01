@@ -254,6 +254,13 @@ export default function Login() {
           .lg-photo { display: none; }
           .lg-right { width: 100%; padding: 40px 24px; }
         }
+        @media(max-width: 480px) {
+          .lg-right { padding: 32px 16px; }
+          .lg-heading { font-size: 20px; }
+          .lg-logo-text { font-size: 18px; }
+          .lg-input { padding: 11px 14px; font-size: 13px; }
+          .lg-submit { font-size: 14px; padding: 13px; }
+        }
       `}</style>
 
       <div className="lg-page">
