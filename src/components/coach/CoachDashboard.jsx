@@ -53,6 +53,7 @@ export default function CoachDashboard() {
 
   const [students, setStudents] = useState([]);
   const [workouts, setWorkouts] = useState([]);
+  const [progress, setProgress] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Modal rutina
@@ -77,12 +78,14 @@ export default function CoachDashboard() {
 
   const loadData = async () => {
     try {
-      const [sRes, wRes] = await Promise.all([
+      const [sRes, wRes, pRes] = await Promise.all([
         fetch(`${API_URL}/auth/students`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(`${API_URL}/workouts`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/progress`, { headers: { Authorization: `Bearer ${token}` } }),
       ]);
       if (sRes.ok) { const d = await sRes.json(); setStudents(d.students || d || []); }
       if (wRes.ok) { const d = await wRes.json(); setWorkouts(d.workouts || d || []); }
+      if (pRes.ok) { const d = await pRes.json(); setProgress(d.progress || d || []); }
     } catch { /* ignore */ }
     setLoading(false);
   };
@@ -161,8 +164,46 @@ export default function CoachDashboard() {
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Buenos días" : hour < 18 ? "Buenas tardes" : "Buenas noches";
-  const barData = weekDays.map((d, i) => ({ d, v: [3, 5, 2, 7, 4, 1, 0][i] }));
+
+  // ── Actividad semanal REAL desde progress ──
+  const now = new Date();
+  const barData = weekDays.map((d, i) => {
+    const target = new Date(now);
+    // weekDays = Lun..Dom → i=0 es lunes, necesitamos encontrar el día real
+    const todayDow = now.getDay(); // 0=Dom,1=Lun,...,6=Sáb
+    const mondayOffset = todayDow === 0 ? -6 : 1 - todayDow;
+    target.setDate(now.getDate() + mondayOffset + i);
+    const dateStr = target.toDateString();
+    const count = progress.filter(p => new Date(p.date || p.createdAt).toDateString() === dateStr).length;
+    return { d, v: count };
+  });
   const maxBar = Math.max(...barData.map((x) => x.v), 1);
+
+  // ── Métricas reales ──
+  const totalExercises = progress.reduce((acc, p) => acc + (p.exercises?.length || 0), 0);
+  const totalCompleted = progress.reduce((acc, p) => acc + (p.exercises?.filter(e => e.completed).length || 0), 0);
+  const adherencia     = totalExercises > 0 ? Math.round((totalCompleted / totalExercises) * 100) : 0;
+  const rutinasCompletadas = progress.filter(p => p.completedWorkout).length;
+  const rutinasTotal       = progress.length;
+  const pctRutinas         = rutinasTotal > 0 ? Math.round((rutinasCompletadas / rutinasTotal) * 100) : 0;
+
+  // Alumnos activos hoy
+  const todayStr    = now.toDateString();
+  const activosHoy  = new Set(
+    progress.filter(p => new Date(p.date || p.createdAt).toDateString() === todayStr)
+      .map(p => (p.user?._id || p.user)?.toString())
+  ).size;
+
+  // Alumnos con al menos una rutina completada este mes
+  const thisMonth = now.getMonth();
+  const thisYear  = now.getFullYear();
+  const activosEsteMes = new Set(
+    progress.filter(p => {
+      const d = new Date(p.date || p.createdAt);
+      return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+    }).map(p => (p.user?._id || p.user)?.toString())
+  ).size;
+  const pctActivos = students.length > 0 ? Math.round((activosEsteMes / students.length) * 100) : 0;
 
   const closeNewUserModal = () => {
     setShowNewUser(false);
@@ -373,8 +414,8 @@ export default function CoachDashboard() {
         <div className="cd-stats">
           <StatCard index={0} icon={<IcoUsers />} label="Alumnos" value={loading ? "—" : students.length} sub="Registrados" accent="#FF6B35" />
           <StatCard index={1} icon={<IcoDumbbell />} label="Rutinas" value={loading ? "—" : workouts.length} sub="Creadas" accent="#3B82F6" />
-          <StatCard index={2} icon={<IcoFire />} label="Activos Hoy" value="—" sub="En entrenamiento" accent="#10B981" />
-          <StatCard index={3} icon={<IcoTrend />} label="Adherencia" value="—%" sub="Promedio" accent="#A855F7" />
+          <StatCard index={2} icon={<IcoFire />} label="Activos Hoy" value={loading ? "—" : activosHoy} sub="En entrenamiento" accent="#10B981" />
+          <StatCard index={3} icon={<IcoTrend />} label="Adherencia" value={loading ? "—%" : `${adherencia}%`} sub="Promedio" accent="#A855F7" />
         </div>
 
         {/* Grid */}
@@ -406,10 +447,10 @@ export default function CoachDashboard() {
           <motion.div className="cd-panel" {...fade(5)}>
             <div className="cd-panel-head"><span className="cd-panel-title">Progreso General</span></div>
             <div className="cd-minibars">
-              <MiniBar label="Adherencia"          value={78} max={100} color="#FF6B35" />
-              <MiniBar label="Rutinas completadas" value={64} max={100} color="#10B981" />
-              <MiniBar label="Nuevos alumnos"      value={30} max={100} color="#3B82F6" />
-              <MiniBar label="Obj. mensuales"      value={62} max={100} color="#A855F7" />
+              <MiniBar label="Adherencia"          value={adherencia}    max={100} color="#FF6B35" />
+              <MiniBar label="Rutinas completadas" value={pctRutinas}    max={100} color="#10B981" />
+              <MiniBar label="Activos este mes"    value={pctActivos}    max={100} color="#3B82F6" />
+              <MiniBar label="Ejercicios hechos"   value={adherencia}    max={100} color="#A855F7" />
             </div>
           </motion.div>
 
