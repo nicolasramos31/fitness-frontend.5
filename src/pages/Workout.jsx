@@ -431,4 +431,22 @@ const CSS = `
     transition: opacity 0.15s;
   }
   .wk-complete-btn:hover { opacity: 0.88; }
+
+  /* ── RESPONSIVE MOBILE ── */
+  @media (max-width: 768px) {
+    .wk-page { padding: 20px 16px 40px; }
+    .wk-exercise-grid { grid-template-columns: 1fr; }
+    .wk-iframe { height: 220px; }
+    .wk-modal { padding: 18px; border-radius: 16px; }
+    .wk-modal-title { font-size: 16px; }
+    .wk-title { font-size: 20px; }
+  }
+  @media (max-width: 480px) {
+    .wk-page { padding: 16px 12px 32px; }
+    .wk-header-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .wk-iframe { height: 180px; }
+    .wk-complete-btn { font-size: 14px; padding: 12px; }
+    .wk-modal-info { gap: 6px; }
+    .wk-info-pill { font-size: 11px; padding: 3px 10px; }
+  }
 `;
