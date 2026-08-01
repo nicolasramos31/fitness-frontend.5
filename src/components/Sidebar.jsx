@@ -12,13 +12,21 @@ const NAV_ITEMS = [
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   return (
     <>
       <style>{CSS}</style>
+
+      {/* ── HAMBURGUESA MOBILE ── */}
+      <button className="sb-hamburger" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menú">
+        {mobileOpen ? "✕" : "☰"}
+      </button>
+      {mobileOpen && <div className="sb-overlay" onClick={() => setMobileOpen(false)} />}
+
       <div className="sb-wrap">
-        <aside className={`sb-sidebar ${open ? "open" : "closed"}`}>
+        <aside className={`sb-sidebar ${open ? "open" : "closed"} ${mobileOpen ? "mobile-open" : ""}`}>
 
           <div className="sb-logo">
             {open
@@ -37,6 +45,7 @@ function Sidebar() {
                   to={item.to}
                   className={`sb-item ${active ? "active" : ""}`}
                   title={!open ? item.label : undefined}
+                  onClick={() => setMobileOpen(false)}
                 >
                   <span className="sb-icon">{item.icon}</span>
                   {open && <span className="sb-label">{item.label}</span>}
@@ -155,6 +164,47 @@ const CSS = `
   .sb-toggle.left-open   { left: calc(210px - 11px); }
   .sb-toggle.left-closed { left: calc(64px - 11px); }
   .sb-toggle:hover { border-color: #ff6b35; color: #ff6b35; background: #161619; }
+
+  /* ── HAMBURGUESA ── */
+  .sb-hamburger {
+    display: none;
+    position: fixed;
+    top: 14px; left: 14px;
+    z-index: 300;
+    background: #161619;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #f0f0f0;
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+  .sb-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 150;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .sb-wrap { position: fixed; z-index: 200; height: 100vh; }
+    .sb-hamburger { display: flex; }
+    .sb-overlay { display: block; }
+    .sb-sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+      width: 210px !important;
+      z-index: 200;
+    }
+    .sb-sidebar.mobile-open { transform: translateX(0); }
+    .sb-toggle { display: none; }
+  }
 `;
 
 export default Sidebar;
