@@ -35,7 +35,8 @@ const styles = {
     background: "#161616",
     padding: "25px",
     borderRadius: "14px",
-    width: "260px",
+    width: "100%",
+    maxWidth: "320px",
     transition: "all 0.25s ease",
     boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
     cursor: "pointer"
