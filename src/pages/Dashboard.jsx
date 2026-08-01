@@ -264,6 +264,7 @@ const CSS = `
     overflow-y: auto;
     animation: dbFade 0.4s ease;
     min-width: 0;
+    min-width: 0;
   }
   @keyframes dbFade {
     from { opacity: 0; transform: translateY(8px); }
@@ -549,6 +550,25 @@ const CSS = `
     width: 100%;
   }
   .db-workout-btn:hover { background: #ff8555; }
+
+  /* ── RESPONSIVE MOBILE ── */
+  @media (max-width: 768px) {
+    .db-main { padding: 70px 16px 32px; }
+    .db-topbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .db-user-chip { display: none; }
+    .db-stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .db-two-col { grid-template-columns: 1fr; }
+    .db-workout-grid { grid-template-columns: 1fr; }
+    .db-section-header { flex-wrap: wrap; }
+  }
+  @media (max-width: 480px) {
+    .db-main { padding: 64px 12px 24px; }
+    .db-greeting { font-size: 18px; }
+    .db-stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .db-stat-value { font-size: 20px; }
+    .db-card { padding: 14px; }
+    .db-workout-card { padding: 16px; }
+  }
 `;
 
 export default Dashboard;
