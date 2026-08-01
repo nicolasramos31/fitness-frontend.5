@@ -200,7 +200,18 @@ export default function CoachStudents() {
         .cs-toast.err { background: rgba(255,80,80,.12); border: 1px solid rgba(255,80,80,.25); color: #ff7070; }
         @keyframes stUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-        @media(max-width:600px) { .cs-form-grid { grid-template-columns: 1fr; } }
+        @media(max-width:768px) {
+          .cs-wrap { padding: 70px 16px 32px; }
+          .cs-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+          .cs-search { width: 100%; }
+          .cs-grid { grid-template-columns: 1fr; }
+          .cs-meta { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width:600px) {
+          .cs-form-grid { grid-template-columns: 1fr; }
+          .cs-modal { padding: 20px; }
+          .cs-wrap { padding: 64px 12px 24px; }
+        }
       `}</style>
 
       <div className="cs-wrap">
