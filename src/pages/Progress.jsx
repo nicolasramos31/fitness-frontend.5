@@ -189,9 +189,18 @@ export default function Progress() {
           .pr-kpis { grid-template-columns: 1fr 1fr; }
           .pr-grid  { grid-template-columns: 1fr; }
           .pr-page  { padding: 24px 16px 40px; }
+          .pr-hist-bar { width: 60px; }
         }
         @media(max-width:480px) {
-          .pr-kpis { grid-template-columns: 1fr; }
+          .pr-page { padding: 16px 12px 32px; }
+          .pr-kpis { grid-template-columns: 1fr 1fr; gap: 8px; }
+          .pr-kpi { padding: 14px 16px; }
+          .pr-kpi-val { font-size: 22px; }
+          .pr-hist-row { flex-wrap: wrap; gap: 8px; }
+          .pr-hist-right { margin-left: 0; }
+          .pr-hist-bar { width: 100%; margin-top: 4px; }
+          .pr-panel { padding: 16px; }
+          .pr-history-panel { padding: 16px; }
         }
       `}</style>
 
