@@ -229,6 +229,28 @@ export default function CoachHistory() {
         .ch-skel  { height:88px; background:#0c0c18; border-radius:14px; animation:chl 1.5s infinite; margin-bottom:10px; }
         @keyframes chl { 0%,100%{opacity:.4} 50%{opacity:.7} }
 
+        @media(max-width:768px) {
+          .ch-wrap { padding: 70px 16px 32px; }
+          .ch-header { flex-direction: column; align-items: flex-start; }
+          .ch-tab-bar { width: 100%; }
+          .ch-tab-btn { flex: 1; text-align: center; padding: 8px 10px; font-size: 12px; }
+          .ch-filters { gap: 4px; }
+          .ch-filter { padding: 6px 12px; font-size: 11px; }
+          .ch-entry { padding: 14px 16px; }
+          .ch-entry-top { flex-wrap: wrap; gap: 8px; }
+          .ch-date { margin-left: 0; }
+          .mh-box { padding: 18px; }
+          .mh-preview-pdf { height: 50vh; }
+        }
+        @media(max-width:480px) {
+          .ch-wrap { padding: 64px 12px 24px; }
+          .ch-tab-bar { flex-direction: column; width: 100%; }
+          .ch-tab-btn { border-radius: 8px; }
+          .ch-av { width: 34px; height: 34px; font-size: 13px; }
+          .ch-exs { gap: 4px; }
+          .ch-ex-tag { font-size: 10px; padding: 3px 8px; }
+        }
+
         /* preview modal */
         .mh-back {
           position:fixed; inset:0; z-index:600;
