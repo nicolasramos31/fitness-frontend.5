@@ -147,8 +147,20 @@ export default function CoachStats() {
           .cst-grid { grid-template-columns: 1fr 1fr; }
           .cst-panels { grid-template-columns: 1fr; }
         }
+        @media(max-width:768px) {
+          .cst-wrap { padding: 70px 16px 32px; }
+          .cst-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+          .cst-kpi { padding: 14px 16px; }
+          .cst-kpi-val { font-size: 22px; }
+          .cst-panel { padding: 16px; }
+          .cst-rings { gap: 10px; }
+          .cst-lb-bar { display: none; }
+        }
         @media(max-width:480px) {
+          .cst-wrap { padding: 64px 12px 24px; }
           .cst-grid { grid-template-columns: 1fr; }
+          .cst-lb-row { padding: 8px; }
+          .cst-lb-name { font-size: 12px; }
         }
       `}</style>
 
