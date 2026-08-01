@@ -347,6 +347,23 @@ const CSS = `
     transition: all 0.15s; font-family: inherit;
   }
   .pf-btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: #f0f0f0; }
+
+  @media (max-width: 768px) {
+    .pf-main { padding: 70px 16px 32px; }
+    .pf-header { flex-direction: column; align-items: flex-start; padding: 16px 18px; }
+    .pf-edit-btn { align-self: flex-start; }
+    .pf-data-grid { grid-template-columns: repeat(3, 1fr); }
+    .pf-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .pf-main { padding: 64px 12px 24px; }
+    .pf-data-grid { grid-template-columns: repeat(2, 1fr); }
+    .pf-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .pf-name { font-size: 18px; }
+    .pf-modal { padding: 20px; }
+    .pf-modal-actions { flex-direction: column; }
+    .pf-btn-primary, .pf-btn-ghost { width: 100%; }
+  }
 `;
 
 export default Profile;
