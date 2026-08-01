@@ -67,11 +67,22 @@ export default function Workout() {
             const progressRes  = await fetch(`${API_URL}/progress/${user._id}/${id}`);
             const progressData = await progressRes.json();
             if (progressData.length > 0) {
-              const latest       = progressData[0];
-              const completedIds = latest.exercises
-                .filter((ex) => ex.completed)
-                .map((ex) => ex.exerciseId);
-              setCompleted(completedIds);
+              // 🔥 FIX: solo tomar el progreso de HOY, no de días anteriores
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const todayProgress = progressData.find(p => {
+                const d = new Date(p.date);
+                d.setHours(0, 0, 0, 0);
+                return d.getTime() === today.getTime();
+              });
+              // Si hay progreso de hoy usarlo, sino dejar vacío (reinicio diario)
+              const latest = todayProgress || null;
+              if (latest) {
+                const completedIds = latest.exercises
+                  .filter((ex) => ex.completed)
+                  .map((ex) => ex.exerciseId);
+                setCompleted(completedIds);
+              }
             }
           } catch (err) { console.error("Error cargando progreso:", err); }
         }
