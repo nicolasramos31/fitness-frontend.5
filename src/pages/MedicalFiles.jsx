@@ -323,10 +323,24 @@ export default function MedicalFiles() {
         .mf-toast.err { background:rgba(255,80,80,.12); border:1px solid rgba(255,80,80,.25); color:#ff7070; }
         @keyframes mfUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
+        @media(max-width:768px) {
+          .mf-page { padding:70px 16px 40px; }
+          .mf-header { flex-direction:column; align-items:flex-start; gap:12px; }
+          .mf-upload-btn { width:100%; justify-content:center; }
+          .mf-file { flex-wrap:wrap; gap:10px; padding:14px; }
+          .mf-file-actions { margin-left:0; width:100%; justify-content:flex-end; }
+          .mf-modal { padding:20px; border-radius:16px; }
+          .mf-confirm-box { padding:22px 20px; margin:0 16px; }
+        }
         @media(max-width:600px) {
-          .mf-page { padding:24px 14px 40px; }
+          .mf-page { padding:64px 12px 32px; }
           .mf-cat-grid { grid-template-columns:repeat(2,1fr); }
-          .mf-file-actions { flex-direction:column; }
+          .mf-file-actions { flex-direction:row; }
+          .mf-view-btn { flex:1; justify-content:center; }
+          .mf-file-name { font-size:13px; }
+          .mf-toast { right:12px; left:12px; bottom:16px; text-align:center; }
+          .mf-modal-actions { flex-direction:column-reverse; }
+          .mf-btn { width:100%; text-align:center; justify-content:center; }
         }
       `}</style>
 
