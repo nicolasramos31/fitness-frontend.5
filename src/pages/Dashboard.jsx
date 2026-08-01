@@ -14,6 +14,7 @@ function Dashboard() {
   const [totalExercises, setTotalExercises]       = useState(0);
   const [weeklyData, setWeeklyData]               = useState([0,0,0,0,0,0,0]);
   const [user, setUser]                           = useState(null);
+  const [completedTodayIds, setCompletedTodayIds] = useState(new Set());
 
   const goWorkout = (id) => navigate(`/workout/${id}`);
 
@@ -53,12 +54,23 @@ function Dashboard() {
 
         let completed = 0, total = 0;
         const days = [0,0,0,0,0,0,0];
+        const todayStr = new Date().toDateString();
+        const workoutsCompletedToday = new Set();
 
         data.forEach(p => {
           const day = new Date(p.date).getDay();
+          const isToday = new Date(p.date).toDateString() === todayStr;
           (p.exercises || []).forEach(e => {
             total++;
-            if (e.completed) { completed++; days[day]++; }
+            if (e.completed) {
+              completed++;
+              days[day]++;
+              // 🔥 FIX: marcar rutinas completadas hoy
+              if (isToday && p.workout) {
+                const wid = p.workout?._id || p.workout;
+                if (wid) workoutsCompletedToday.add(wid.toString());
+              }
+            }
           });
         });
 
@@ -66,6 +78,7 @@ function Dashboard() {
         setTotalExercises(total);
         setProgressPercent(total ? Math.round((completed / total) * 100) : 0);
         setWeeklyData(days);
+        setCompletedTodayIds(workoutsCompletedToday);
       } catch (err) {
         console.error("error progress", err);
       }
@@ -196,12 +209,18 @@ function Dashboard() {
 
             {workouts.map((workout) => {
               const exCount = getExerciseCount(workout);
+              const doneToday = completedTodayIds.has(workout._id?.toString());
               return (
-                <div key={workout._id} className="db-workout-card">
+                <div key={workout._id} className={`db-workout-card ${doneToday ? "done-today" : ""}`}>
                   <div className="db-workout-top">
                     <div className="db-workout-icon">⊞</div>
-                    <div className="db-workout-badge">
-                      {exCount} ejercicios
+                    <div style={{display:"flex", gap:6, alignItems:"center"}}>
+                      {doneToday && (
+                        <span style={{fontSize:10, padding:"3px 10px", background:"rgba(16,185,129,0.15)", color:"#10B981", borderRadius:20, fontWeight:700}}>
+                          ✓ Completado hoy
+                        </span>
+                      )}
+                      <div className="db-workout-badge">{exCount} ejercicios</div>
                     </div>
                   </div>
 
@@ -472,6 +491,15 @@ const CSS = `
     border-color: rgba(255,107,53,0.3);
     box-shadow: 0 12px 30px rgba(0,0,0,0.5);
   }
+  .db-workout-card.done-today {
+    border-color: rgba(16,185,129,0.25);
+    background: rgba(16,185,129,0.03);
+  }
+  .db-workout-card.done-today .db-workout-btn {
+    background: rgba(16,185,129,0.15);
+    color: #10B981;
+  }
+  .db-workout-card.done-today .db-workout-btn:hover { background: rgba(16,185,129,0.25); }
 
   .db-workout-top {
     display: flex;
